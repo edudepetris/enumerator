@@ -90,5 +90,19 @@ module CustomEnumerable
     end
   end
 
+  def count(item = nil, &block)
+    if item && block
+      raise ArgumentError, 'given block not used'
+    end
 
+    reduce(0) do |accumulator, element|
+      if block_given?
+        accumulator + (block.call(element) ? 1 : 0)
+      elsif item
+        accumulator + (item == element ? 1 : 0)
+      else
+        accumulator + 1
+      end
+    end
+  end
 end
